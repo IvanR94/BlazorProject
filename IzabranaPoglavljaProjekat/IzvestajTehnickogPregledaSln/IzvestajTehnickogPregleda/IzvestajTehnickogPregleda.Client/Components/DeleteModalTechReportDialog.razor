@@ -1,0 +1,34 @@
+﻿﻿
+<div class="modal fade show" id="exampleModalCenter" style="display:block; background-color: rgba(10,10,10,.8);" aria-labelledby="exampleModalCenterTitle" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Da li ste sigurni da zelite da obrisete izvestaj?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" @onclick="ModalClose" style="margin-right:10px">Odustani</button> <button type="button" class="btn btn-danger" @onclick="DeleteTechReport">Obrisi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int TehnickiPregledID { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDelete { get; set; }
+
+    private Task ModalClose()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+    private Task DeleteTechReport()
+    {
+        return OnDelete.InvokeAsync(TehnickiPregledID);
+    }
+}

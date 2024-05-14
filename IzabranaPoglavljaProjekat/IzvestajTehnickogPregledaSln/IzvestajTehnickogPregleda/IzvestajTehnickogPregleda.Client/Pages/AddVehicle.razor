@@ -1,0 +1,157 @@
+﻿@page "/addVehicle"
+@using System.Text.Json
+@attribute [StreamRendering]
+@rendermode InteractiveAuto
+
+@inject IVehicleData _vehicleDB
+
+<div><h3>DODAVANJE VOZILA</h3></div>
+
+<div class="card text-center">
+    <div class="card-header">
+        Podaci o vozilu
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Marka vozila" @bind="Marka">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Model vozila" @bind="Model">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Godiste" @bind="Godiste">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div style="height:10px"></div>
+
+<div class="card text-center">
+    <div class="card-header">
+        Podaci o vlasniku
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Ime vlasnika" @bind="ImeVlasnika">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Prezime vlasnika" @bind="PrezimeVlasnika">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div style="height:10px"></div>
+
+<button type="button" class="btn btn-secondary" @onclick="ZapisiMethod" style="margin-right: 10px">Zapisi</button>
+<button type="button" class="btn btn-secondary" @onclick="OcistiPolja">Odustani</button>
+
+@if (SuccessDialogShow)
+{
+    <SuccessModal OnClose="@OnCloseSuccesModal"></SuccessModal>
+}
+@if (ErrorDialogShow)
+{
+    <DeleteModalVehicleDialog OnClose="@OnCloseErrorModal"></DeleteModalVehicleDialog>
+}
+@if (ValidateDialogShow)
+{
+    <ValidateModal OnClose="@OnCloseValidateModal"></ValidateModal>
+}
+
+@code {
+
+    private string? Marka { get; set; }
+    private string? Model { get; set; }
+    private string? Godiste { get; set; }
+    private string? ImeVlasnika { get; set; }
+    private string? PrezimeVlasnika { get; set; }
+
+    public bool SuccessDialogShow { get; set; } = false;
+    public bool ErrorDialogShow { get; set; } = false;
+    public bool ValidateDialogShow { get; set; } = false;   
+
+    public JsonElement JsonObject { get; set; }
+
+    public string? Josn { get; set; }
+
+    private void OcistiPolja()
+    {
+        Marka = string.Empty;
+        Model = string.Empty;
+        Godiste = string.Empty;
+        ImeVlasnika = string.Empty;
+        PrezimeVlasnika = string.Empty;
+    }
+
+    private void ZapisiMethod()
+    {
+        var valid = Validation(Marka, Model, Godiste, ImeVlasnika, PrezimeVlasnika);
+
+        if (!valid)
+        {
+            ValidateDialogShow = true;
+            return;
+        }
+
+        JsonObject = new JsonElement();
+        JsonObject = JsonDocument.Parse($@"{{
+            ""MarkaJson"": ""{Marka}"",
+            ""ModelJson"": ""{Model}"",
+            ""GodisteJson"": ""{Godiste}"",
+            ""ImeJson"": ""{ImeVlasnika}"",
+            ""PrezimeJson"": ""{PrezimeVlasnika}""
+        }}").RootElement;
+
+        var result = _vehicleDB.AddNewVehicle(JsonObject);
+
+        CheckResult(result);
+        OcistiPolja();
+    }
+
+    private void OnCloseSuccesModal(bool parameter)
+    {
+        SuccessDialogShow = parameter;
+        StateHasChanged();
+    }
+
+    private void OnCloseErrorModal(bool parameter)
+    {
+        ErrorDialogShow = parameter;
+        StateHasChanged();
+    }
+
+    private void OnCloseValidateModal(bool parameter)
+    {
+        ValidateDialogShow = parameter;
+        StateHasChanged();
+    }
+
+    private void CheckResult(bool parameter)
+    {
+        if (parameter)
+            SuccessDialogShow = true;
+        else
+            ErrorDialogShow = true;
+    }
+
+    private bool Validation(string marka, string model, string godiste, string ime, string prezime)
+    {
+        if (string.IsNullOrEmpty(marka) || string.IsNullOrEmpty(model) || string.IsNullOrEmpty(godiste) || string.IsNullOrEmpty(ime) || string.IsNullOrEmpty(prezime))
+        {
+            return false;
+        }
+        else if (!int.TryParse(godiste, out _))
+        {
+            return false;
+        }
+        return true;
+    }
+}

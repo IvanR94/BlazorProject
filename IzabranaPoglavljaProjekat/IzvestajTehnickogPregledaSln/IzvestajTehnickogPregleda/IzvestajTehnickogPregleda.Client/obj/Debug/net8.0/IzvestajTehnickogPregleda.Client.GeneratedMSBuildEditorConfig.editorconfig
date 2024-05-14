@@ -1,0 +1,79 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = IzvestajTehnickogPregleda.Client
+build_property.RootNamespace = IzvestajTehnickogPregleda.Client
+build_property.ProjectDir = C:\Users\Ivan\Desktop\IzabranaPoglavljaProjekat\IzvestajTehnickogPregledaSln\IzvestajTehnickogPregleda\IzvestajTehnickogPregleda.Client\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Ivan\Desktop\IzabranaPoglavljaProjekat\IzvestajTehnickogPregledaSln\IzvestajTehnickogPregleda\IzvestajTehnickogPregleda.Client
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/DefectiveItemsModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEZWZlY3RpdmVJdGVtc01vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/DeleteModalTechReportDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEZWxldGVNb2RhbFRlY2hSZXBvcnREaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/DeleteModalVehicleDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEZWxldGVNb2RhbFZlaGljbGVEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/ErrorSuccessModal/ErrorModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFcnJvclN1Y2Nlc3NNb2RhbFxFcnJvck1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/ErrorSuccessModal/SuccessModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFcnJvclN1Y2Nlc3NNb2RhbFxTdWNjZXNzTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/ErrorSuccessModal/ValidateModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFcnJvclN1Y2Nlc3NNb2RhbFxWYWxpZGF0ZU1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/ModalVehicleDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbFZlaGljbGVEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Components/TechReportUpdateModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xUZWNoUmVwb3J0VXBkYXRlTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Pages/AddTechReport.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkVGVjaFJlcG9ydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Pages/AddVehicle.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkVmVoaWNsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Pages/TechReportDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVjaFJlcG9ydERhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/Pages/VehicleDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZURhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ivan/Desktop/IzabranaPoglavljaProjekat/IzvestajTehnickogPregledaSln/IzvestajTehnickogPregleda/IzvestajTehnickogPregleda.Client/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

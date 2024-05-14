@@ -1,0 +1,91 @@
+﻿@using AppBroker.Models
+@using System.Text.Json
+
+﻿<div class="modal fade show" id="exampleModalCenter" style="display:block; background-color: rgba(10,10,10,.8);" aria-labelledby="exampleModalCenterTitle" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Title</h4>
+                <button type="button" class="close" @onclick="ModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Marka: </p><input type="text" class="form-control" value="@Marka" @oninput="UpdateMarka">
+                <p>Model: </p><input type="text" class="form-control" value="@Model" @oninput="UpdateModel">
+                <p>Godiste: </p><input type="text" class="form-control" value="@Godiste" @oninput="UpdateGodiste">
+                <p>Vlasnik: </p><input type="text" class="form-control" value="@FullName" @oninput="UpdateVlasnik">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick="Zapisi">Zapisi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int VehicleID { get; set; }
+    [Parameter]
+    public string? Title { get; set; }
+    [Parameter]
+    public string? Marka { get; set; }
+    [Parameter]
+    public string? Model { get; set; }
+    [Parameter]
+    public int Godiste { get; set; }
+    [Parameter]
+    public string? FullName { get; set; }
+
+    public JsonElement JsonObject { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+    [Parameter]
+    public EventCallback<JsonElement> OnOk { get; set; }
+
+    private Task ModalClose()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+    private Task Zapisi()
+    {
+        JsonObject = new JsonElement();
+        JsonObject = JsonDocument.Parse($@"{{
+            ""VehicleIDJson"": ""{VehicleID}"",
+            ""MarkaJson"": ""{Marka}"",
+            ""ModelJson"": ""{Model}"",
+            ""GodisteJson"": ""{Godiste}"",
+            ""FullNameJson"": ""{FullName}""
+        }}").RootElement;
+
+        return OnOk.InvokeAsync(JsonObject);
+    }
+
+    private void UpdateMarka(ChangeEventArgs e)
+    {
+        if(e.Value != null)
+            Marka = e.Value.ToString();
+    }
+
+    private void UpdateModel(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+            Model = e.Value.ToString();
+    }
+
+    private void UpdateGodiste(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            var input = Convert.ToString(e.Value);
+            if (int.TryParse(input, out _))
+                Godiste = Convert.ToInt32(e.Value);
+        }
+    }
+
+    private void UpdateVlasnik(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+            FullName = e.Value.ToString();
+    }
+}

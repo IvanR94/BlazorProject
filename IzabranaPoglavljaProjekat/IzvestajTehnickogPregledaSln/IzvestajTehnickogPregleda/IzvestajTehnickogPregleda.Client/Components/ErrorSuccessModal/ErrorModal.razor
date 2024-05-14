@@ -1,0 +1,22 @@
+﻿<div class="modal fade show" id="exampleModalCenter" style="display:block; background-color: rgba(10,10,10,.8);" aria-labelledby="exampleModalCenterTitle" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p style="color:darkred">Doslo je do greske. Kontaktirajte podrsku.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" @onclick="ModalClose">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private Task ModalClose()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+}

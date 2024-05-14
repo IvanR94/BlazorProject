@@ -1,0 +1,128 @@
+﻿@using AppBroker.Models
+@using System.Text.Json
+
+﻿<div class="modal fade show" id="exampleModalCenter" style="display:block; background-color: rgba(10,10,10,.8);" aria-labelledby="exampleModalCenterTitle" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Azuriranje izvestaja tehnickog pregleda</h4>
+                <button type="button" class="close" @onclick="ModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col">
+                                <select class="form-select" aria-label="Default select example" @bind="selectedTechTypeId">
+                                    <option value="0" selected>Izaberite tip tehnickog pregleda</option>
+                                    @if (TechnicalInspectionTypeList != null && TechnicalInspectionTypeList.Count > 0)
+                                    {
+                                        @foreach (var item in TechnicalInspectionTypeList)
+                                        {
+                                            <option value=@item.TipTehnickogPregledaID>@item.NazivTehnickogPregleda</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                @if (DefectiveItemsList != null && DefectiveItemsList.Count > 0)
+                {
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Neispravne stavke
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                @foreach (var item in DefectiveItemsList)
+                                {
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Naziv neispravne stavke" @bind="item.NazivNeispravnogDela">
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Opis neispravnosti" @bind="item.OpisNeispravnosti">
+                                        </div>
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-danger" @onclick="() => RemoveRow(item)">x</button>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="text-center mt-3">
+                                    <button type="button" class="btn btn-outline-secondary" @onclick="AddRow">Dodaj stavku</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick="Zapisi">Zapisi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int TehnickiPregledID { get; set; }
+    [Parameter]
+    public string? TipTehnickog { get; set; }
+    [Parameter]
+    public string? ImePrezimeZaposlenog { get; set; }
+
+    private int selectedEmployeeId;
+    private int selectedTechTypeId = 0;
+    private DateTime SelectedDate { get; set; } = DateTime.Now.Date;
+
+    public JsonElement JsonObject { get; set; }
+
+    [Parameter]
+    public List<EmployeeModel>? EmployeesList { get; set; }
+    [Parameter]
+    public List<TechnicalInspectionTypeModel>? TechnicalInspectionTypeList { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+    [Parameter]
+    public List<DefectiveItems>? DefectiveItemsList { get; set; }
+    [Parameter]
+    public EventCallback<JsonElement> OnOk { get; set; }
+
+    private Task ModalClose()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+    private Task Zapisi()
+    {
+        string defectiveItemsJson = JsonSerializer.Serialize(DefectiveItemsList);
+
+        JsonObject = new JsonElement();
+        JsonObject = JsonDocument.Parse($@"{{
+            ""TehnickiIDJson"": ""{TehnickiPregledID}"",
+            ""TechTypeJson"": ""{selectedTechTypeId}"",
+            ""DefectiveItemsJson"": {defectiveItemsJson}
+        }}").RootElement;
+
+        return OnOk.InvokeAsync(JsonObject);
+    }
+
+    private void UpdateTipTehnickog(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+            TipTehnickog = e.Value.ToString();
+    }
+
+    private void RemoveRow(DefectiveItems item)
+    {
+        DefectiveItemsList.Remove(item);
+    }
+
+    private void AddRow()
+    {
+        DefectiveItemsList.Add(new DefectiveItems());
+    }
+}

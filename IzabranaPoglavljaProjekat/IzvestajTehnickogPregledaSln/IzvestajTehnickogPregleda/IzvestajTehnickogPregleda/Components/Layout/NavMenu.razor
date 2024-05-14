@@ -1,0 +1,59 @@
+﻿@rendermode InteractiveServer
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="showTechReports">FONtech</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <div class="containerVehicle">
+                <div class="nav-link-subMenu" @onclick="ToggleSubMenuVehicle">
+                    <i class="fa-solid fa-car"></i> <label class="lblVehicle">Vozila</label>
+                </div>
+                @if (showSubMenuVehicle)
+                {
+                    <div class="sub-menu">
+                        <NavLink class="nav-link-subMenuItem" href="showVehicles">Prikazi vozila</NavLink>
+                        <NavLink class="nav-link-subMenuItem" href="addVehicle">Dodaj novo vozilo</NavLink>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="nav-item px-3">
+            <div class="containerTechRep">
+                <div class="nav-link-subMenu" @onclick="ToggleSubMenuTechReport">
+                    <i class="fas fa-file"></i> <label class="lblTecRep">Tehnicki pregled</label>
+                </div>
+                @if (showSubMenuTechReport)
+                {
+                    <div class="sub-menu">
+                        <NavLink class="nav-link-subMenuItem" href="/">Prikazi izvestaje</NavLink>
+                        <NavLink class="nav-link-subMenuItem" href="addTechReport">Dodaj nov izvestaj</NavLink>
+                    </div>
+                }
+            </div>
+        </div>
+    </nav>
+</div>
+
+@code{
+    private bool showSubMenuVehicle = false;
+
+    private bool showSubMenuTechReport = false;
+
+    private void ToggleSubMenuVehicle()
+    {
+        showSubMenuVehicle = !showSubMenuVehicle;
+    }
+
+    private void ToggleSubMenuTechReport()
+    {
+        showSubMenuTechReport = !showSubMenuTechReport;
+    }
+}

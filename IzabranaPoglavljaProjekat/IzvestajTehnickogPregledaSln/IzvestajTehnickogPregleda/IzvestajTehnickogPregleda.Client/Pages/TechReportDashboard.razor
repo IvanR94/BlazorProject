@@ -1,0 +1,187 @@
+﻿@page "/"
+@using System.Text.Json
+@attribute [StreamRendering]
+@rendermode InteractiveAuto
+
+@inject ITechnicalReportData _techReportDB
+
+<div><h3>PODACI O IZVESTAJIMA TEHNICKOG PREGLEDA</h3></div>
+
+@if (techReports is null)
+{
+    <p><em>Ucitavanje podataka...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Datum tehnickog pregleda</th>
+                <th>Zaposleni</th>
+                <th>Tip tehnickog pregleda</th>
+                <th>Vozilo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var techReport in techReports)
+            {
+                <tr>
+                    @if (techReport.StatusTehnickogPregleda)
+                    {
+                        <td><i class="fa-solid fa-check" style="margin-left:50%"></i></td>
+                    }
+                    else
+                    {
+                        <td><i class="fa-solid fa-x" style="margin-left:50%"></i></td>
+                    }
+                    <td>@techReport.DatumVrsenjaTehnickogPregleda.ToShortDateString()</td>
+                    <td>@techReport.ImePrezimeZaposlenog</td>
+                    <td>@techReport.TipTehnickogPregleda</td>
+                    <td>@techReport.Vozilo</td>
+                    @if (techReport.StatusTehnickogPregleda)
+                    {
+                        <td>
+                            <button class="btn btn-secondary" style="margin-right:5px" @onclick="() => OpenDialog(techReport)">Azuriraj</button> <button class="btn btn-secondary">Obrisi</button>
+                        </td>
+                    }
+                    else{
+                        <td>
+                            <button class="btn btn-secondary" style="margin-right:5px" @onclick="() => OpenDialog(techReport)">Azuriraj</button> <button class="btn btn-secondary" @onclick="() => OpenDeleteDialog(techReport)">Obrisi</button> <button class="btn btn-outline-secondary" style="margin-left:5px" @onclick="() => OpenDetailesDialog(techReport)">Detalji</button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (DialogDetailesOpen)
+    {
+        <DefectiveItemsModal DefectiveItemsList=@DefectiveItemsList OnClose="@OnCloseModalMethod"></DefectiveItemsModal>
+    }
+    @if (DialogOpen)
+    {
+        <TechReportUpdateModal TehnickiPregledID=@SelectedTechReportID EmployeesList=@EmployeesList TechnicalInspectionTypeList=@TechnicalInspectionTypeList DefectiveItemsList=@DefectiveItemsList OnClose="@OnCloseUpdateModalMethod" OnOk="@OnUpdateMethod"></TechReportUpdateModal>
+    }
+    @if (DeleteDialogOpen)
+    {
+        <DeleteModalTechReportDialog TehnickiPregledID=@SelectedTechReportID OnClose="@OnCloseDeleteMethod" OnDelete="@OnDeleteMethod"></DeleteModalTechReportDialog>
+    }
+    @if (SuccessDialogShow)
+    {
+        <SuccessModal OnClose="@OnCloseSuccesModal"></SuccessModal>
+    }
+    @if (ErrorDialogShow)
+    {
+        <DeleteModalVehicleDialog OnClose="@OnCloseErrorModal"></DeleteModalVehicleDialog>
+    }
+}
+
+@code {
+    private List<TechnicalReportModel>? techReports;
+    public bool DialogDetailesOpen { get; set; }
+    public bool DialogOpen { get; set; }
+    public bool DeleteDialogOpen { get; set; }
+    public bool SuccessDialogShow { get; set; } = false;
+    public bool ErrorDialogShow { get; set; } = false;
+
+    private int SelectedTechReportID { get; set; }
+
+    public List<DefectiveItems>? DefectiveItemsList;
+    public List<EmployeeModel>? EmployeesList;
+    public List<TechnicalInspectionTypeModel>? TechnicalInspectionTypeList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        techReports = await _techReportDB.GetTechnicalReports();
+        EmployeesList = await _techReportDB.GetAllEmployees();
+        TechnicalInspectionTypeList = await _techReportDB.GetAllTechnicalTypes();
+    }
+
+    private void OpenDetailesDialog(TechnicalReportModel techReportModel)
+    {
+        DefectiveItemsList = techReportModel.DefectiveItemsList;
+
+        DialogDetailesOpen = true;
+        StateHasChanged();
+    }
+
+    private void OpenDialog(TechnicalReportModel techReportModel)
+    {
+        SelectedTechReportID = techReportModel.BrojIzvestajaID;
+        DefectiveItemsList = techReportModel.DefectiveItemsList;
+
+        DialogOpen = true;
+        StateHasChanged();
+    }
+
+    private void OnCloseModalMethod(bool parameter)
+    {
+        DialogDetailesOpen = parameter;
+        StateHasChanged();
+    }
+
+    private void OnCloseUpdateModalMethod(bool parameter)
+    {
+        DialogOpen = parameter;
+        StateHasChanged();
+    }
+
+    private async Task OnUpdateMethod(JsonElement jsonObject)
+    {
+        var result = _techReportDB.UpdateTechnicalRepor(jsonObject);
+
+        CheckResult(result);
+
+        techReports = await _techReportDB.GetTechnicalReports();
+
+        DialogOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenDeleteDialog(TechnicalReportModel techReport)
+    {
+        SelectedTechReportID = techReport.BrojIzvestajaID;
+
+        DeleteDialogOpen = true;
+        StateHasChanged();
+    }
+
+    private void CheckResult(bool parameter)
+    {
+        if (parameter)
+            SuccessDialogShow = true;
+        else
+            ErrorDialogShow = true;
+    }
+
+    private void OnCloseSuccesModal(bool parameter)
+    {
+        SuccessDialogShow = parameter;
+        StateHasChanged();
+    }
+
+    private void OnCloseErrorModal(bool parameter)
+    {
+        ErrorDialogShow = parameter;
+        StateHasChanged();
+    }
+
+    private void OnCloseDeleteMethod(bool parameter)
+    {
+        DeleteDialogOpen = parameter;
+        StateHasChanged();
+    }
+
+    private async Task OnDeleteMethod(int id)
+    {
+        var result = _techReportDB.DeleteTechReport(id);
+
+        CheckResult(result);
+
+        techReports = await _techReportDB.GetTechnicalReports();
+
+        DeleteDialogOpen = false;
+        StateHasChanged();
+    }
+}
